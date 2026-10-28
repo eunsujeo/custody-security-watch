@@ -1,0 +1,24 @@
+name: 새 사건 제안
+description: 기록할 만한 공개 사건이나 취약점 공지를 제안해 주세요.
+title: "[제안] "
+body:
+  - type: input
+    id: service
+    attributes:
+      label: 영향 서비스·체인·자산
+    validations:
+      required: true
+  - type: textarea
+    id: summary
+    attributes:
+      label: 사건 요약과 수탁 지갑에 중요한 이유
+      description: 발생일·공개일과 시간대를 아는 범위에서 적어주세요. 미확인 내용은 표시하고 비공개 정보나 키는 올리지 마세요.
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: 공개 근거 URL
+      description: 공식 공지와 신뢰할 수 있는 보안 분석을 우선해 주세요.
+    validations:
+      required: true

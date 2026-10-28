@@ -1,0 +1,24 @@
+name: 기록 정정
+description: 원문과 다른 내용이나 새로운 후속 정보를 알려주세요.
+title: "[정정] "
+body:
+  - type: input
+    id: incident
+    attributes:
+      label: 사건 이름 또는 페이지 URL
+    validations:
+      required: true
+  - type: textarea
+    id: correction
+    attributes:
+      label: 어떤 내용이 어떻게 바뀌어야 하나요?
+      description: 확인된 사실과 해석을 구분해 주세요. 비공개 정보·개인키·시드·API 키를 올리지 마세요.
+    validations:
+      required: true
+  - type: textarea
+    id: sources
+    attributes:
+      label: 공개 출처와 확인 시각
+      description: 공식 공지, 보안 분석, 온체인 거래 등 검토 가능한 URL을 적어주세요.
+    validations:
+      required: true

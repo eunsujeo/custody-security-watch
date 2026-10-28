@@ -1,0 +1,181 @@
+{
+  "asOf": "2026-10-28",
+  "rankingBasis": "스테이블코인 수탁 지갑 학습 관련성. 자산·서명 권한에 대한 직접성, 여러 체인으로의 확산 가능성, 운영에 적용할 수 있는 교훈을 편집자가 종합했습니다. 피해액 순위나 보안 점수가 아닙니다.",
+  "incidents": [
+    {
+      "id": "coindcx-2026-10", "rank": 1, "title": "CoinDCX", "subtitle": "폐기한 주소에도 입금은 계속된다",
+      "kind": "incident", "occurredDate": "2026-10-21", "disclosedDate": "2026-10-22",
+      "timing": "발생: 2026-10-21. 분석상 첫 공격 움직임 21:19 KST. 공개 경보: 10-22, 정확한 최초 시각 미확인. 회사의 손실 인정 공지: 10-25.",
+      "chains": ["TRON"], "assets": ["USDT"], "attack": "레거시 지갑·운영 통제", "status": "회사 손실 부담 · 회수 추적",
+      "summary": "구형 지갑의 입금을 장부에 반영했지만 스윕이 실패해 자산이 쌓였다. 회사는 1,599만 USDT 손실을 인정했다.",
+      "why": "스테이블코인 입금 주소, 스윕, 고객 장부와 실물 자산 대사의 연결을 가장 직접적으로 보여준다.",
+      "facts": [
+        {"label": "회사 발표", "text": "CoinDCX는 2025년 사고 후 폐기한 인프라에서 자동 스윕이 일정 기간 실패했고, 1,599만 USDT 손실을 회사가 부담했다고 밝혔다. 고객 잔액과 현행 거래·지갑 운영은 영향이 없다는 설명이다.", "sources": ["official"]},
+        {"label": "온체인 분석", "text": "Bitquery는 TRON 지갑 40개에서 유출을 추적했다. 구형 주소를 통한 정상 이체도 사고 당일 관찰해, ‘폐기’와 ‘실제 자금 처리 중단’이 같지 않다고 지적했다.", "sources": ["analysis"]}
+      ],
+      "loss": [
+        {"label": "확인된 회사 발표액", "text": "15,990,000 USDT. 2025년 7월 사고 손실과 별개다.", "sources": ["official"]},
+        {"label": "동결 · 반환 아님", "text": "분석상 10-22 22:45 UTC(10-23 07:45 KST)에 Tether가 9개 주소의 약 221만 USDT를 동결했다. 반환이 확인되지 않아 손실액에서 차감하지 않는다.", "sources": ["analysis"]}
+      ],
+      "cause": "스윕 실패와 취약한 구형 인프라는 회사 설명이다. 공격자가 키 또는 서명 권한을 얻은 구체적인 경로는 공개 자료로 확정되지 않았다.",
+      "response": "회사는 손실 부담과 잔존 인프라 모니터링 강화를 발표했다. 독립적인 고객 장부 전체 대사나 동결 자산 반환 완료는 확인하지 못했다.",
+      "lessons": ["폐기 주소도 잔액과 신규 입금을 계속 감시한다.", "입금 인식 → 고객 장부 반영 → 스윕 완료를 별도 상태로 추적하고 잔류 금액·시간 초과를 경보한다.", "키 교체만으로 종료하지 않고 예전 주소·수수료 공급 지갑·백업 키까지 이관 범위를 확인한다.", "발행사 동결 요청에 필요한 체인·자산·주소·거래 시각을 빠르게 정리한다."],
+      "unknowns": "스윕 실패의 정확한 기간·경보 처리, 최초 침입 경로, 동결분 반환 여부.",
+      "sources": [
+        {"id": "official", "type": "공식", "title": "CoinDCX · 10월 25일 설명", "url": "https://coindcx.com/blog/coindcx-news/on-chain-wallet-activity-update-21-oct-2026"},
+        {"id": "analysis", "type": "보안 분석", "title": "Bitquery · 10월 23일 갱신본", "url": "https://www.bitquery.io/investigations/coindcx-hack"}
+      ],
+      "history": [{"date": "2026-10-28", "text": "공식 손실 인정과 분석의 동결 기록을 대조해 최초 수록. 2025년 사고와 분리."}]
+    },
+    {
+      "id": "predict-fun-2026-10", "rank": 2, "title": "Predict.fun", "subtitle": "정상 서명이 곧 정상 요청은 아니다",
+      "kind": "incident", "occurredDate": "2026-10-22", "disclosedDate": "2026-10-27",
+      "timing": "발생: 2026-10-22·27 UTC의 두 차례 공격(각 거래의 KST 날짜는 다를 수 있음). 회사 발표: 10-27 UTC. 분석의 마지막 탈취: 10-28 00:42 KST. 최초 공개 시각 미확인.",
+      "chains": ["BNB Chain", "Ethereum"], "assets": ["USDT"], "attack": "키·서명 권한 악용", "status": "문서 사이트 중단 · 환급 약속",
+      "summary": "소유자 키로 서명된 거래가 사용자 지갑에서 USDT를 빼냈다. API 문서 사이트 침해 가능성은 조사 중이다.",
+      "why": "문서·개발 도구에 넘긴 키가 수탁 시스템의 서명 경계까지 이어질 수 있다.",
+      "facts": [
+        {"label": "온체인 분석", "text": "Bitquery는 BNB Chain 계정 29개의 397,708 USDT 유출을 집계했다. 분석한 탈취 거래는 소유자 서명을 사용했으며 Predict.fun 시장 컨트랙트 결함을 입증하지 않는다. Ethereum은 자금 이동 경로다.", "sources": ["analysis"]},
+        {"label": "회사 발표 · 보도 인용", "text": "회사는 약 40만 USDT 피해와 외부 제공 API 문서 사이트의 침해 가능성을 밝혔다. 해당 사이트를 내리고 전액 환급과 사후 보고서를 약속했다.", "sources": ["report"]}
+      ],
+      "loss": [{"label": "분석 집계", "text": "397,708 USDT. 발표 후 발생한 4,900 USDT 탈취도 이 합계에 포함되므로 별도로 더하지 않는다.", "sources": ["analysis"]}],
+      "cause": "유효한 소유자 서명은 관찰됐다. 키 획득 또는 서명 접근의 경로, 문서 사이트와의 인과관계는 미확정이다. 특정 지갑 SDK의 취약점으로 단정할 수 없다.",
+      "response": "문서 사이트 중단과 환급 약속 단계다. 실제 환급 완료는 확인하지 못했다.",
+      "lessons": ["운영 키를 문서 예제·웹 콘솔·외부 자동화에 입력하지 않는다.", "서명 시스템에서 목적지·금액·체인·호출 함수를 검증한다.", "웹사이트를 내리는 것과 노출된 키의 권한을 종료하는 것을 구분한다."],
+      "unknowns": "최초 침입 경로, 정확한 영향 사용자 범위, 실제 환급 완료.",
+      "sources": [
+        {"id": "analysis", "type": "보안 분석", "title": "Bitquery · 두 공격과 서명 분석", "url": "https://www.bitquery.io/investigations/predict-fun-hack"},
+        {"id": "report", "type": "보도", "title": "Crypto.news · 회사 발표 인용", "url": "https://crypto.news/predict-fun-400000-usdt-theft-refunds/"}
+      ],
+      "history": [{"date": "2026-10-28", "text": "두 공격을 하나로 묶고 발표 후 추가 거래가 전체 합계에 포함됨을 명시."}]
+    },
+    {
+      "id": "fireblocks-mpc-lib-2026", "rank": 3, "title": "Fireblocks mpc-lib", "subtitle": "MPC 지분의 계층 격리도 별도 검증 대상",
+      "kind": "advisory", "occurredDate": null, "disclosedDate": "2026-10-26",
+      "timing": "취약점 공지: 2026-10-26(최초 시각 미확인). CERT 최종 수정: 10-27 07:45 KST. 실제 공격 발생일은 확인되지 않았다.",
+      "chains": ["체인 공통"], "assets": [], "attack": "키 파생·MPC", "status": "취약점 공지 · 적용 여부 확인 필요",
+      "summary": "특정 hardened 키 파생 경로의 fail-open 동작이 같은 참여자의 상위 지분 격리를 약화한다. 실제 탈취 사건과 구분한다.",
+      "why": "스테이블코인 종류보다 키 생성·파생·서명 기반에 관한 위험이다. 해당 라이브러리와 경로를 사용하는 경우 관련성이 높다.",
+      "facts": [{"label": "공식 취약점 공지", "text": "CERT/CC VU#701544(CVE-2026-90975)는 부모 비밀값이 없을 때의 파생 동작을 지적했다. 하위 signer 지분과 chain code를 아는 공격자가 같은 참여자의 상위 지분을 복원할 수 있다고 설명한다.", "sources": ["cert"]}],
+      "loss": [{"label": "탈취액 집계 제외", "text": "이 공지로 확인된 실제 악용·자산 탈취액은 없다. 한 참여자의 지분 복원이 전체 개인키 복원이나 단독 출금 성공을 뜻하지 않는다.", "sources": ["cert"]}],
+      "cause": "부모 키 누락을 오류로 종료하지 않는 hardened 파생의 fail-open 동작. 실제 배포의 파생 방식과 chain code 접근 조건을 확인해야 한다.",
+      "response": "공지 작성 시점에는 공급사 수정본과 입장이 제시되지 않았다. CERT는 chain code 비밀 유지와 파생 격리 가정 재검토를 완화책으로 제시한다. 상용 Fireblocks 전체 서비스의 취약성을 뜻하지 않는다.",
+      "lessons": ["사용 라이브러리·커밋·파생 경로를 인벤토리로 관리한다.", "MPC 임계값 보안과 참여자 내부 계층 격리를 별도로 검증한다.", "부모 키 누락 등 비정상 상태에서 안전하게 실패하는지 확인한다."],
+      "unknowns": "구체적인 영향 버전, 개별 상용 배포의 노출, 실제 악용 여부와 후속 패치.",
+      "sources": [{"id": "cert", "type": "공식", "title": "CERT/CC · VU#701544", "url": "https://www.kb.cert.org/vuls/id/701544"}],
+      "history": [{"date": "2026-10-28", "text": "자산 탈취 사건이 아닌 취약점 공지로 수록. MPC 임계값과 지분 계층 격리를 분리해 설명."}]
+    },
+    {
+      "id": "initia-2026-10", "rank": 4, "title": "Initia", "subtitle": "위조 잔액이 다른 체인의 준비금을 소진",
+      "kind": "incident", "occurredDate": "2026-10-23", "disclosedDate": "2026-10-24",
+      "timing": "발생: 2026-10-23 23:59 KST경. 공개 경보: 10-24 00:27 KST. 체인 중단: 10-24 00:41:30 KST. 공개 경보가 반드시 최초 공지는 아니다.",
+      "chains": ["Initia", "Noble", "Ethereum"], "assets": ["USDC", "AUSD0", "iUSD", "WETH"], "attack": "무담보 발행·브리지", "status": "중단 후 패치 감사 단계",
+      "summary": "Initia의 위조 토큰 잔액이 브리지를 거쳐 실제 자산으로 지급됐다. 무담보 발행 액면가와 실제 유출액은 다르다.",
+      "why": "같은 USDC 표기라도 원본 자산, 체인상의 표현, 브리지 준비금과 상환 경로를 따로 관리해야 한다.",
+      "facts": [{"label": "온체인 분석", "text": "Bitquery는 무담보 토큰 액면가 약 748만 달러와 실제 브리지 지급 약 273만 달러를 구분했다. Noble의 관련 USDC 준비금이 저점에 거의 소진되면서 일반 출금도 실패했다.", "sources": ["analysis"]}, {"label": "회사 업데이트 · 보도 인용", "text": "10-27 보도에 따르면 Initia는 수정안을 마련해 외부 감사를 진행 중이며, 이후 자산 복구와 L1·롤업 재개 계획을 발표할 예정이다.", "sources": ["update"]}],
+      "loss": [{"label": "분석 추정 · 실제 지급", "text": "약 273만 달러. 무담보 발행 748만 달러를 더하지 않는다. Initia상의 AUSD0 문제를 Agora의 원본 AUSD 무담보 발행으로 표현하지 않는다.", "sources": ["analysis"]}],
+      "cause": "MoveVM 구현의 결함이 지목됐다. 읽은 온체인 분석만으로 구체적인 우회 메커니즘을 확정할 수 없고 최종 사후 보고서가 필요하다.",
+      "response": "검토한 후속 자료는 감사·재개 준비 단계다. 재가동과 자산 반환 완료를 확인한 상태가 아니다.",
+      "lessons": ["자산을 티커뿐 아니라 체인·발행 컨트랙트·브리지 경로로 식별한다.", "체인 중단, 준비금 부족, 상환 실패를 입출금 상태에 각각 반영한다.", "네이티브 스테이블코인과 브리지 표현의 한도를 분리한다."],
+      "unknowns": "최종 기술 원인 보고서, 감사 통과·실제 재개, 손실 보전·반환의 완료 여부.",
+      "sources": [{"id": "analysis", "type": "보안 분석", "title": "Bitquery · 발행액과 실제 유출액 구분", "url": "https://www.bitquery.io/investigations/initia-hack"}, {"id": "update", "type": "보도", "title": "CoinNess · 10월 27일 패치 감사 업데이트", "url": "https://coinness.com/en/news/1173083"}],
+      "history": [{"date": "2026-10-28", "text": "초기 분석과 10월 27일 감사 진행 보도를 구분해 수록."}]
+    },
+    {
+      "id": "gamdom-2026-10", "rank": 5, "title": "Gamdom", "subtitle": "자동화 서버 하나가 여러 체인의 출금에 연결",
+      "kind": "incident", "occurredDate": "2026-10-14", "disclosedDate": null,
+      "timing": "발생: 분석상 2026-10-13 15:50 UTC경(10-14 00:50 KST). 최초 공개 날짜·시각은 검토 자료로 확정하지 못했다. 이후 Nexus Mutual의 주간 보안 검토에 정리됐다.",
+      "chains": ["Ethereum", "Solana", "BNB Chain", "TRON", "XRP Ledger", "Polygon", "Arbitrum", "Optimism", "Bitcoin"], "assets": ["복수 자산"], "attack": "서버·서명 인프라", "status": "서비스 재개 · 손실 규모 차이",
+      "summary": "자동화 서버 접근 후 여러 체인의 핫월렛에서 자금이 빠져나갔다. 회사와 외부 분석의 피해액은 일치하지 않는다.",
+      "why": "체인을 여러 개 지원해도 공통 서버·자격증명이 공유되면 동시에 피해가 날 수 있다.",
+      "facts": [{"label": "보안 검토 · 회사 설명 인용", "text": "Nexus Mutual의 정리에 따르면 회사는 자동화 서버의 무단 연결을 발견했고 잔여 자산을 콜드월렛으로 옮겼다. 약 사흘 중단 후 10-16 서비스를 재개했다. 고객 잔액은 영향이 없다는 회사 설명이다.", "sources": ["review"]}],
+      "loss": [{"label": "상충하는 집계", "text": "창업자 설명은 300만 달러 초과, vxdb의 온체인 집계는 약 420만 달러다. 근거 범위 차이가 해소되지 않아 합산하거나 하나의 확정액으로 표시하지 않는다.", "sources": ["review"]}],
+      "cause": "회사 설명상 서버 무단 접근. 키 유출·세션 탈취 등 구체적인 서명 접근 방식은 확정되지 않았다.",
+      "response": "잔여 자산 콜드 이동과 서비스 재개가 보도됐다. 자산 회수 완료는 확인되지 않았다. 별도로 제기된 데이터 유출 주장은 이 사건 피해액에 포함하지 않았다.",
+      "lessons": ["일반 자동화 서버에서 출금 서명 권한에 직접 접근하지 못하게 한다.", "체인·역할별 서명 권한과 자금 한도를 분리한다.", "비정상 다중 체인 출금에 공통 중단 스위치를 둔다."],
+      "unknowns": "정확한 침입·서명 경로, 피해액 차이, 실제 회수 금액.",
+      "sources": [{"id": "review", "type": "보안 분석", "title": "Nexus Mutual · Oct 12–18 보안 정리", "url": "https://nexusmutual.io/blog/onchain-security-roundup-oct-12-18"}],
+      "history": [{"date": "2026-10-28", "text": "다중 체인 핫월렛 사고로 수록. 별도 데이터 유출 주장과 합산하지 않음."}]
+    },
+    {
+      "id": "bloom-2026-10", "rank": 6, "title": "Bloom Trading", "subtitle": "사용하지 않는 봇 지갑도 서명 권한은 남는다",
+      "kind": "incident", "occurredDate": "2026-10-26", "disclosedDate": "2026-10-26",
+      "timing": "발생: 2026-10-26 10:03:07–10:04:41 KST. 같은 날 피해 게시물과 회사 공지 공개, 정확한 최초 공지 시각 미확인.",
+      "chains": ["Solana"], "assets": ["SOL", "USDC"], "attack": "봇·키 보관", "status": "환급 약속 · 원인 조사",
+      "summary": "9명의 거래자가 쓰던 지갑 48개에서 9,408 SOL이 빠져나갔다. USDC 추가 탈취 시도는 실패했다.",
+      "why": "핵심 피해는 SOL이지만 자동화 지갑의 서명 접근 문제는 USDC 보관에도 적용된다.",
+      "facts": [{"label": "온체인 분석", "text": "Bitquery는 94초간 48개 지갑에서 약 95.3만 달러 상당의 9,408 SOL 유출을 추적했다. 오래 사용하지 않은 지갑도 포함된다. 거래에는 소유자 서명이 사용됐다.", "sources": ["analysis"]}],
+      "loss": [{"label": "분석 추정", "text": "9,408 SOL, 평가 시점 약 95.3만 달러. 49,041 USDC 탈취 시도는 가스 부족으로 실패하고 소유자가 옮겼으므로 피해액에 더하지 않는다.", "sources": ["analysis"]}],
+      "cause": "소유자 서명 악용은 관찰됐다. 회사가 언급한 외부 모듈 침해 등 구체적인 최초 접근 경로는 독립 검증되지 않았다. 유효한 서명만으로 키 파일 반출을 단정하지 않는다.",
+      "response": "회사는 피해 환급을 약속했다. 실제 지급 완료와 서명 접근 경로의 최종 규명은 확인하지 못했다.",
+      "lessons": ["자동화 지갑에 운영상 필요한 잔액만 둔다.", "사용 종료 시 봇 권한·키 사본·백업까지 회수하거나 새 키로 이관한다.", "네이티브 수수료 자산의 가용성도 비상 이관 절차에서 확인한다."],
+      "unknowns": "서명 권한을 얻은 정확한 경로, 최종 환급 완료.",
+      "sources": [{"id": "analysis", "type": "보안 분석", "title": "Bitquery · SOL 유출과 USDC 실패 거래", "url": "https://www.bitquery.io/investigations/bloom-trading-bot-hack"}, {"id": "official", "type": "공식", "title": "Bloom Trading · 환급 공지", "url": "https://x.com/BloomTrading/status/2114603144546009207"}],
+      "history": [{"date": "2026-10-28", "text": "SOL 유출과 실패한 USDC 시도를 분리해 수록."}]
+    },
+    {
+      "id": "fearless-extension-2026", "rank": 7, "title": "Fearless Wallet", "subtitle": "앱을 바꿔도 이미 노출된 키는 안전해지지 않는다",
+      "kind": "incident", "occurredDate": null, "disclosedDate": "2026-10-21",
+      "timing": "위험 코드 추가: 2025-02-19. 공지상 2026-10-10까지 간헐 활성. 2026-10-21 공개(포럼 시각의 시간대 미확인). 단일 발생일을 정할 수 없는 장기 노출이다.",
+      "chains": ["Polkadot", "키 재사용 체인"], "assets": ["DOT"], "attack": "지갑 확장·키 유출", "status": "키 이관 권고",
+      "summary": "브라우저 확장을 잠금 해제하면 개인키를 외부로 보내는 코드가 확인됐다. 같은 키를 다른 앱으로 옮기는 것만으로 해결되지 않는다.",
+      "why": "운영자용 지갑 확장과 공유 시드의 위험을 체인·토큰 종류와 독립적으로 보여준다.",
+      "facts": [{"label": "공식 생태계 보안 공지", "text": "Polkadot Community Foundation은 Chrome 확장 3.0.1·3.0.3·3.0.4·3.0.5의 위험 코드를 알렸다. 검토한 모바일 버전에는 코드가 없지만 확장에 같은 키를 넣은 이력이 있으면 다른 환경에서도 그 키를 노출된 것으로 봐야 한다.", "sources": ["notice"]}],
+      "loss": [{"label": "잠정 신고 규모", "text": "관련 가능성이 있는 8명의 신고 합계 17,286 DOT. 검증된 전체 피해액이나 스테이블코인 피해액으로 표현하지 않는다.", "sources": ["notice"]}],
+      "cause": "브라우저 확장에 포함된 키 전송 코드. 전체 공급망 침투 경위와 최종 피해 범위는 이 공지만으로 확정할 수 없다.",
+      "response": "새 키를 안전한 별도 환경에서 생성하고 관련 체인의 자산을 이관하라는 권고다. 비밀번호 변경·재설치는 노출 키를 폐기하지 못한다.",
+      "lessons": ["지갑 앱 변경과 키 교체를 구분한다.", "동일 시드를 사용하는 모든 체인의 자산·권한을 함께 확인한다.", "운영 키를 일반 브라우저 확장에 가져오지 않는다."],
+      "unknowns": "전체 피해 규모, 모든 배포본·플랫폼의 영향, 코드 삽입의 최종 경위.",
+      "sources": [{"id": "notice", "type": "공식", "title": "Polkadot Community Foundation · 보안 공지", "url": "https://forum.polkadot.network/t/security-notice-fearless-wallet-browser-extension-leaked-private-keys/19058"}],
+      "history": [{"date": "2026-10-28", "text": "장기 노출·해당 주 공개 사례로 수록. 신고액을 확정 총피해로 취급하지 않음."}]
+    },
+    {
+      "id": "keystone-2026-10", "rank": 8, "title": "Keystone", "subtitle": "제품 인증 키와 자산 서명 키는 다르다",
+      "kind": "incident", "occurredDate": "2026-10-20", "disclosedDate": "2026-10-27",
+      "timing": "회사 설명상 웹사이트 침해 인지: 2026-10-20(정확한 시각 미확인). 이번 상세 발표를 인용한 보도: 10-27 00:02 KST. 최초 공지 날짜·시각은 별도 확인 필요.",
+      "chains": ["체인 공통"], "assets": [], "attack": "기기 인증·공급망", "status": "구형 키 재고 폐기 계획 · 출하 중단",
+      "summary": "기기 정품 인증에 쓰는 WebAuth 키가 유출됐다. 고객의 복구 문구나 자산 서명 개인키 유출과 구분해야 한다.",
+      "why": "하드웨어를 사용하는 수탁자도 정품 인증·조달 경로·수령 시점의 신뢰를 관리해야 한다.",
+      "facts": [{"label": "회사 발표 · 보도 인용", "text": "Keystone은 웹사이트의 외부 모니터링 도구 취약점을 통한 접근과 기기 인증 키·고객 정보 노출을 설명했다. 복구 문구와 자산 개인키는 영향이 없다는 회사 입장이다.", "sources": ["report"]}],
+      "loss": [{"label": "자산 손실 미확인", "text": "실제 자산 탈취액이나 위조 기기 유통은 확인되지 않았다. 18,835대는 폐기 예정 재고 수량이며 금전 피해액도 폐기 완료 수량도 아니다.", "sources": ["report"]}],
+      "cause": "회사 설명상 웹사이트 접근으로 정품 인증용 키 탈취. 이 키로 위조 기기를 인증 통과시킬 가능성이 문제이며, 체인의 자산 서명 키와 기능이 다르다.",
+      "response": "문제 키 사용 중단, 새 인증 키 도입, 기존 재고 폐기 및 주문 출하 보류 계획. 실행 완료는 별도 확인이 필요하다.",
+      "lessons": ["서명 키·기기 인증 키·웹사이트 자격증명을 서로 다른 자산으로 관리한다.", "장비 구매·검수 이력과 인증 키 버전을 남긴다.", "새로 받은 기기는 공지의 적용 범위를 확인한 뒤 운영에 투입한다."],
+      "unknowns": "재고 폐기와 새 키 출하 완료, 실제 위조 기기·자산 피해 여부.",
+      "sources": [{"id": "report", "type": "보도", "title": "Crypto.news · 10월 26일 회사 발표 인용", "url": "https://crypto.news/keystone-to-destroy-18835-hardware-wallets-after-authentication-key-breach/"}],
+      "history": [{"date": "2026-10-28", "text": "상세 발표의 보도 시각을 KST로 변환. 자산 키 유출과 인증 키 유출을 구분."}]
+    },
+    {
+      "id": "x100-2026-10", "rank": 9, "title": "X100", "subtitle": "순간 확보한 의결권이 금고의 실행 권한으로",
+      "kind": "incident", "occurredDate": "2026-10-24", "disclosedDate": "2026-10-24",
+      "timing": "발생·공개: 2026-10-24로 보고됨. 개별 공격·최초 공개의 정확한 KST 시각은 미확인.",
+      "chains": ["Ethereum"], "assets": ["USDT", "X"], "attack": "플래시론·거버넌스", "status": "유출 추적 · 반환 미확인",
+      "summary": "플래시론으로 의결권을 얻고 금고의 불리한 스왑을 실행해 USDT를 유출시켰다.",
+      "why": "수탁 자산을 외부 프로토콜에 배치한다면 키 보관뿐 아니라 거버넌스의 자산 처분 권한도 위험이다.",
+      "facts": [{"label": "온체인 분석", "text": "Bitquery는 공격자가 X를 잠가 3개 의석 중 2개를 얻고, 금고의 X를 매우 낮은 가격에 처분하도록 투표·실행했다고 분석했다. 처음 2개 공격에서 USDT가 유출됐고 별도 후속 거래는 X를 가져갔다.", "sources": ["analysis"]}],
+      "loss": [{"label": "분석 집계", "text": "두 거래의 합계 4,846,108 USDT. 후속 X 토큰 물량에 임의 가격을 곱해 더하지 않으며 사용자 잠금 자산 전체가 유출됐다고 표현하지 않는다.", "sources": ["analysis"]}],
+      "cause": "단기간에 확보 가능한 의결권과 즉시 실행, 불리한 가격의 스왑을 허용하는 구조의 결합이라는 분석이다.",
+      "response": "자금 경로 분석이 공개됐다. 반환 완료·최종 손실 확정이나 모든 취약 경로 수정은 확인하지 못했다.",
+      "lessons": ["외부 프로토콜 금고를 움직일 수 있는 거버넌스 권한을 조사한다.", "타임락·스냅샷·최소 수령액·가격 편차 제한을 점검한다.", "외부 배치 자산은 보관 지갑과 별도 한도로 관리한다."],
+      "unknowns": "최종 회수 금액, 수정·운영 재개에 대한 최종 공지.",
+      "sources": [{"id": "analysis", "type": "보안 분석", "title": "Bitquery · 거버넌스 공격과 유출액", "url": "https://bitquery.io/investigations/x100-hack"}],
+      "history": [{"date": "2026-10-28", "text": "USDT 두 거래와 후속 X 탈취를 구분해 수록."}]
+    },
+    {
+      "id": "wax-bridge-2026-10", "rank": 10, "title": "WAX Bridge", "subtitle": "음수 수수료를 허용한 출금 메시지",
+      "kind": "incident", "occurredDate": "2026-10-22", "disclosedDate": "2026-10-23",
+      "timing": "발생: 2026-10-22 18:46:18–18:47:44 KST. 보안 분석 공개: 10-23(정확한 최초 시각 미확인).",
+      "chains": ["WAX", "Solana", "Ethereum"], "assets": ["USDC", "USDT", "DAI", "WETH", "WBTC"], "attack": "브리지·입력 검증", "status": "코드 교체·한도 추가 분석",
+      "summary": "출금액과 같은 크기의 음수 수수료로 차감액을 0으로 만들었지만, 다른 체인에서는 실제 자산이 지급됐다.",
+      "why": "금액·수수료의 입력 검증과 체인 간 지급 불변식은 스테이블코인 전송에도 직접 적용된다.",
+      "facts": [{"label": "온체인·코드 분석", "text": "Bitquery는 5번의 출금에서 음수 수수료 때문에 WAX 잔액 차감 없이 Solana·Ethereum의 자산이 지급된 것을 추적했다. 분석상 약 5시간 뒤 코드가 교체되고 이후 출금 한도가 추가됐다.", "sources": ["analysis"]}],
+      "loss": [{"label": "분석 추정", "text": "약 90,500달러. 스테이블코인 외 WETH·WBTC를 포함한다. 관련 주소에서 거래소로 이동한 115,600달러 전체를 이번 피해액으로 잡지 않는다.", "sources": ["analysis"]}],
+      "cause": "출금 함수가 수수료의 음수 여부를 검증하지 않아 quantity + max_fee가 0이 되면서도 지급 메시지를 만들었다는 분석이다.",
+      "response": "코드 교체와 한도 추가는 분석으로 확인됐다. 서비스 전면 재개·거래소 동결·자산 반환 완료는 확인하지 못했다.",
+      "lessons": ["금액·수수료·소수점·경계값을 입력 단계와 서명 단계에서 검증한다.", "지급 메시지 서명 전에 실제 차감·소각·담보 상태를 확인한다.", "건별·누적 출금 한도와 급격한 준비금 감소 경보를 둔다."],
+      "unknowns": "최종 반환·동결 여부, 전면 서비스 복구 상태.",
+      "sources": [{"id": "analysis", "type": "보안 분석", "title": "Bitquery · 음수 수수료와 자금 추적", "url": "https://www.bitquery.io/investigations/wax-bridge-hack"}],
+      "history": [{"date": "2026-10-28", "text": "스테이블코인만 집계한 초기 금액과 전체 유출 추정을 구분해 수록."}]
+    }
+  ]
+}
