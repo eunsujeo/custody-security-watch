@@ -83,7 +83,8 @@ test('generated project-site pages have no broken local links, missing fragments
   assert.ok(thor.includes('10 ETH를 반환'));
   const initia=htmlCache.get('cases/initia-2026-10.html');
   assert.ok(initia.includes('2116087208688099687'));
-  assert.ok(initia.includes('11월 2일 재시작 계획 · 완료 미확인'));
+  assert.ok(initia.includes('2117120717468958926'));
+  assert.ok(initia.includes('2117120741011530044'));
   assert.ok(initia.includes('자료 검토: 2026-11-02 KST'));
   assert.ok(htmlCache.get('index.html').includes('개별 검토일은 상세 페이지 참고'));
   assert.ok(data.incidents.find(i=>i.id==='coindcx-2026-10').timeline.length>=4);
