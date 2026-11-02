@@ -103,3 +103,9 @@ dist/                    생성 결과 (git 제외)
 주간보고에는 `rankedIncidentIds` 배열로 최대 10개의 사건 ID를 순서대로 저장한다. 주간 게시 시 해당 사건 카드를 `data/incidents.json`에 함께 추가·갱신한다. 홈 TOP 10과 첫 추천 사례는 최신 보고서의 이 배열에서 생성된다. 연결이 누락되거나 ID가 중복·미등록이면 빌드를 실패시켜 과거 순위가 그대로 게시되는 일을 막는다. 이전 사건의 ID·상세 URL·출처·수정 이력은 보존한다.
 
 카드의 `reviewedAt`은 해당 본문의 실제 검토일이다. `timeline`은 `{at, label, text, sources}` 배열이며, `at`에는 확인된 KST ISO 시각(`+09:00`) 또는 날짜만 넣는다. 발생, 공개, 중단, 복구, 동결, 반환, 보상을 구분하고 같은 날짜 안에서 시각이 없으면 순서를 확정하지 않는다. 시간 미확인·실제 발생 시각 미공개는 본문에도 명시한다. 날짜가 전혀 확인되지 않은 사건은 날짜를 만들어 넣지 말고 본문에 미확인으로 기록한다. 후속 갱신 시 현재 요약·대응 상태와 시간순 경과·수정 이력을 함께 유지한다.
+
+## 용어 설명 툴팁
+
+본문의 점선 밑줄 용어는 마우스오버, 키보드 초점 또는 클릭·탭으로 설명을 볼 수 있습니다. Esc 또는 바깥 클릭으로 닫습니다. 홈·주간보고·과거 보관함·상세 페이지에 같은 용어집을 적용합니다. 출처 링크와 버튼·제목·코드 블록은 바꾸지 않습니다. JavaScript가 실행되지 않으면 기본 브라우저 툴팁을 사용합니다.
+
+용어와 쉬운 설명은 `src/glossary.mjs`에서 관리합니다. 새 용어는 짧은 뜻과 이 사건에서의 역할을 적고 문서마다 의미가 다른 표현은 문맥을 명시합니다. 긴 영어 단어 안의 일부만 잘못 매칭하지 않도록 검사합니다. PoR 설명은 [Binance](https://www.binance.com/en/proof-of-reserves), Binance 14는 [Blockaid](https://blockaid.io/blog/binance-55b-hack-using-advanced-ai-models-blockaid-detects-the-biggest-theft-in-crypto-history), Security Council은 [Arbitrum 공식 문서](https://docs.arbitrum.foundation/concepts/security-council), ZachXBT의 이 사건 역할은 [본인 발표](https://x.com/zachxbt/status/2115960582230913357)를 대조했습니다.
