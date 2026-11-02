@@ -67,9 +67,16 @@ test('generated project-site pages have no broken local links, missing fragments
     }
     assert.doesNotMatch(html,/undefined|\[object Object\]/);
   }
-  assert.equal(htmlCache.size,13);
+  assert.equal(htmlCache.size,14+(await readdir(`${root}data/reports/`)).filter(f=>f.endsWith('.json')).length);
   assert.equal([...htmlCache.get('index.html').matchAll(/class="case-card"/g)].length, data.incidents.length);
-  assert.ok(htmlCache.get('weekly.html').includes('7개 사례'));
+  assert.ok(htmlCache.get('weekly-2026-10-19.html').includes('7개 사례'));
+  const reportFiles=(await readdir(`${root}data/reports/`)).filter(f=>f.endsWith('.json')).sort();
+  const latest=JSON.parse(await readFile(`${root}data/reports/${reportFiles.at(-1)}`,'utf8'));
+  assert.ok(htmlCache.get('weekly.html').includes(`${latest.start} 00:00 — ${latest.end} 23:59:59 KST`));
+  assert.ok(htmlCache.get('weekly-2026-10-26.html').includes('Binance'));
+  assert.ok(htmlCache.get('weekly.html').includes('주간보고 보관함'));
+  assert.ok(htmlCache.get('index.html').includes('최신 주간보고'));
+  assert.equal(htmlCache.get('weekly.html').includes('turn955view0'),false);
 });
 
 test('HTML escapes source-derived text and attributes', () => {
