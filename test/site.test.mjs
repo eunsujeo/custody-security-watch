@@ -95,3 +95,14 @@ test('generated project-site pages have no broken local links, missing fragments
 test('HTML escapes source-derived text and attributes', () => {
   assert.equal(escapeHtml('<img src=x onerror="alert(1)">&'), '&lt;img src=x onerror=&quot;alert(1)&quot;&gt;&amp;');
 });
+
+test('Binance timeline retains independently sourced incident response milestones', () => {
+  const incident=data.incidents.find(i=>i.id==='binance-2026-10');
+  const linked=new Set(incident.timeline.flatMap(event=>event.sources));
+  for (const source of ['arb-freeze','initial-update','recovery-90','recovery-95','wallet-rotation','withdrawal-phase-one','laundering-solana']) {
+    assert.ok(linked.has(source), `missing response milestone: ${source}`);
+  }
+  assert.ok(incident.timeline.some(e=>e.label.includes('80%')));
+  assert.ok(incident.timeline.some(e=>e.text.includes('고객 입출금 통계')));
+  assert.ok(incident.timeline.some(e=>e.label.includes('배후 공개') && e.text.includes('KST 공개 시각은 미확인')));
+});
