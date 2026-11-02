@@ -11,7 +11,8 @@ function position() {
   const anchor=active.getBoundingClientRect(), box=popup.getBoundingClientRect();
   const left=Math.max(12,Math.min(anchor.left,window.innerWidth-box.width-12));
   const below=anchor.bottom+8;
-  const top=below+box.height<=window.innerHeight-12 ? below : Math.max(12,anchor.top-box.height-8);
+  const preferred=below+box.height<=window.innerHeight-12 ? below : anchor.top-box.height-8;
+  const top=Math.max(12,Math.min(preferred,window.innerHeight-box.height-12));
   popup.style.left=`${left}px`;popup.style.top=`${top}px`;
 }
 function show(button, pin=false) {
