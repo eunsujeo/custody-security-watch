@@ -67,7 +67,7 @@ test('generated project-site pages have no broken local links, missing fragments
     }
     assert.doesNotMatch(html,/undefined|\[object Object\]/);
   }
-  assert.equal(htmlCache.size,14+(await readdir(`${root}data/reports/`)).filter(f=>f.endsWith('.json')).length);
+  assert.equal(htmlCache.size,data.incidents.length+4+(await readdir(`${root}data/reports/`)).filter(f=>f.endsWith('.json')).length);
   assert.equal([...htmlCache.get('index.html').matchAll(/class="case-card"/g)].length, data.incidents.length);
   assert.ok(htmlCache.get('weekly-2026-10-19.html').includes('7개 사례'));
   const reportFiles=(await readdir(`${root}data/reports/`)).filter(f=>f.endsWith('.json')).sort();
@@ -75,6 +75,13 @@ test('generated project-site pages have no broken local links, missing fragments
   assert.ok(htmlCache.get('weekly.html').includes(`${latest.start} 00:00 — ${latest.end} 23:59:59 KST`));
   assert.ok(htmlCache.get('weekly-2026-10-26.html').includes('Binance'));
   assert.ok(htmlCache.get('weekly.html').includes('주간보고 보관함'));
+  const topHtml=htmlCache.get('index.html').split('id="case-grid"')[1].split('archive-heading')[0];
+  assert.deepEqual([...topHtml.matchAll(/data-id="([^"]+)"/g)].map(m=>m[1]),latest.rankedIncidentIds);
+  const thor=htmlCache.get('cases/thorchain-2026-10.html');
+  assert.ok(thor.includes('시간순 경과'));
+  assert.ok(thor.indexOf('datetime="2026-10-31T20:34:00+09:00"')<thor.indexOf('datetime="2026-11-02T06:51:00+09:00"'));
+  assert.ok(thor.includes('10 ETH를 반환'));
+  assert.ok(htmlCache.get('cases/coindcx-2026-10.html').includes('자료 검토: 2026-10-28 KST'));
   assert.ok(htmlCache.get('index.html').includes('최신 주간보고'));
   assert.equal(htmlCache.get('weekly.html').includes('turn955view0'),false);
 });

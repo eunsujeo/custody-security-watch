@@ -32,8 +32,25 @@ export function validateData(data) {
       if (!f.label || !f.text || !f.sources?.length || f.sources.some(s => !sourceIds.has(s))) fail(`${i.id}: 근거 연결 오류`);
     }
     for (const h of i.history) if (!date(h.date) || h.date > data.asOf || !h.text) fail(`${i.id}: 이력 오류`);
+    if (i.reviewedAt && (!date(i.reviewedAt) || i.reviewedAt > data.asOf)) fail(`${i.id}: 검토일 오류`);
+    for (const event of i.timeline ?? []) {
+      if (!event.at || !Number.isFinite(Date.parse(event.at)) || !event.label || !event.text ||
+          !event.sources?.length || event.sources.some(id=>!sourceIds.has(id))) fail(`${i.id}: 시간순 경과 오류`);
+    }
   }
   return data;
+}
+
+export function chronologicalEvents(events = []) {
+  // A date-only source does not establish ordering within that calendar day.
+  return [...events].sort((a,b)=>a.at.slice(0,10).localeCompare(b.at.slice(0,10)) ||
+    ((a.at.length===10 || b.at.length===10) ? 0 : Date.parse(a.at)-Date.parse(b.at)));
+}
+
+export function rankedRecords(incidents, ids) {
+  if (!Array.isArray(ids) || ids.length>10 || new Set(ids).size!==ids.length) throw new Error('TOP 10 연결 오류');
+  const records=new Map(incidents.map(i=>[i.id,i]));
+  return ids.map(id=>{if(!records.has(id)) throw new Error(`TOP 10 사건 누락: ${id}`); return records.get(id);});
 }
 
 // Weekly inclusion uses the incident's KST date. Only unknown-start cases fall back to disclosure.
