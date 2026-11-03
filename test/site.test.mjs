@@ -85,7 +85,7 @@ test('generated project-site pages have no broken local links, missing fragments
   assert.ok(initia.includes('2116087208688099687'));
   assert.ok(initia.includes('2117120717468958926'));
   assert.ok(initia.includes('2117120741011530044'));
-  assert.ok(initia.includes('자료 검토: 2026-11-02 KST'));
+  assert.ok(initia.includes(`자료 검토: ${data.incidents.find(i=>i.id==='initia-2026-10').reviewedAt} KST`));
   assert.ok(htmlCache.get('index.html').includes('개별 검토일은 상세 페이지 참고'));
   assert.ok(data.incidents.find(i=>i.id==='coindcx-2026-10').timeline.length>=4);
   assert.ok(htmlCache.get('cases/coindcx-2026-10.html').includes('자료 검토: 2026-10-28 KST'));
